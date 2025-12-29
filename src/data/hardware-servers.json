@@ -1,0 +1,56 @@
+[
+    {
+        "id": "server_entry",
+        "name": "Entry Level AI Server",
+        "gpu_model": "NVIDIA A5000 / L4",
+        "vram_per_gpu": 24,
+        "min_gpus": 1,
+        "max_gpus": 8,
+        "is_scalable": true,
+        "ram": "128GB ECC",
+        "cpu": "AMD EPYC or Dual Xeon Silver",
+        "isUnifiedMemory": false,
+        "supported_os": [
+            "linux"
+        ],
+        "base_price": 5000,
+        "gpu_price": 2500,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "server_mid",
+        "name": "Mid-Range Inference Node",
+        "gpu_model": "NVIDIA RTX 6000 Blackwell",
+        "vram_per_gpu": 96,
+        "min_gpus": 1,
+        "max_gpus": 8,
+        "is_scalable": true,
+        "ram": "512GB ECC",
+        "cpu": "AMD EPYC Genoa or Dual Xeon Gold",
+        "isUnifiedMemory": false,
+        "supported_os": [
+            "linux"
+        ],
+        "base_price": 18000,
+        "gpu_price": 8000,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "server_high",
+        "name": "High-Performance System",
+        "gpu_model": "NVIDIA H100 NVL",
+        "vram_per_gpu": 94,
+        "min_gpus": 1,
+        "max_gpus": 8,
+        "is_scalable": true,
+        "ram": "1TB+ ECC",
+        "cpu": "Top-tier AMD EPYC or Dual Xeon Platinum",
+        "isUnifiedMemory": false,
+        "supported_os": [
+            "linux"
+        ],
+        "base_price": 20000,
+        "gpu_price": 30000,
+        "tensor_architecture": "nvidia"
+    }
+]

@@ -5,6 +5,9 @@ export default function ConfiguratorForm() {
     const [formData, setFormData] = useState({
         userType: 'individual',
         concurrentUsers: 1,
+        linesOfCode: 0,
+        os: 'linux',
+        budget: 5000,
         useCases: []
     });
 
@@ -42,6 +45,27 @@ export default function ConfiguratorForm() {
                     </select>
                 </div>
 
+                {formData.userType === 'individual' && (
+                    <div style={{ marginBottom: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '6px' }}>
+                        <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>Preferred OS</label>
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            {['linux', 'windows', 'mac'].map(os => (
+                                <label key={os} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                                    <input
+                                        type="radio"
+                                        name="os"
+                                        value={os}
+                                        checked={formData.os === os}
+                                        onChange={(e) => setFormData({ ...formData, os: e.target.value })}
+                                        style={{ marginRight: '0.5rem' }}
+                                    />
+                                    {os.charAt(0).toUpperCase() + os.slice(1)}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {formData.userType === 'organization' && (
                     <div style={{ marginBottom: '1.5rem' }}>
                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Estimated Concurrent Users</label>
@@ -54,6 +78,19 @@ export default function ConfiguratorForm() {
                         />
                     </div>
                 )}
+
+                <div style={{ marginBottom: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '6px' }}>
+                    <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>Maximum Budget (USD)</label>
+                    <select
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: parseInt(e.target.value) })}
+                        style={{ width: '100%', padding: '0.8rem', borderRadius: '6px', background: 'var(--color-bg)', color: 'white', border: '1px solid #334155' }}
+                    >
+                        {Array.from({ length: 40 }, (_, i) => (i + 1) * 5000).map(amount => (
+                            <option key={amount} value={amount}>${amount.toLocaleString()}</option>
+                        ))}
+                    </select>
+                </div>
 
                 <div style={{ marginBottom: '2rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Intended Tasks (Select all that apply)</label>
@@ -95,7 +132,7 @@ export default function ConfiguratorForm() {
                             <p style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: 0 }}>{recommendation.gpu}</p>
                         </div>
                         <div>
-                            <h4 style={{ margin: '0 0 0.25rem', color: '#94a3b8' }}>VRAM</h4>
+                            <h4 style={{ margin: '0 0 0.25rem', color: '#94a3b8' }}>VRAM (on GPU)</h4>
                             <p style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: 0 }}>{recommendation.vram}</p>
                         </div>
                         <div>
@@ -150,6 +187,18 @@ export default function ConfiguratorForm() {
                                             </a>
                                         </div>
                                         <div style={{ fontSize: '0.9em', color: '#94a3b8' }}>{model.desc}</div>
+                                        {model.estSize && (
+                                            <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                                <span style={{ fontSize: '0.85em', color: 'var(--color-primary)', background: 'rgba(59, 130, 246, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>
+                                                    ~{model.estSize} GB Base
+                                                </span>
+                                                {model.maxContextDisplay && (
+                                                    <span style={{ fontSize: '0.85em', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>
+                                                        Max Context: ~{model.maxContextDisplay}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

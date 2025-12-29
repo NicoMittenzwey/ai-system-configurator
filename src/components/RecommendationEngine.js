@@ -1,128 +1,256 @@
+import modelsData from '../data/models.json';
+import workstationsData from '../data/hardware-workstations.json';
+import serversData from '../data/hardware-servers.json';
+import softwareData from '../data/software.json';
+
 export const RecommendationEngine = (data) => {
     let recommendations = {
         title: "Recommended Configuration",
-        gpu: "Entry Level",
-        vram: "8GB",
-        ram: "16GB",
-        cpu: "Modern 6-core",
+        gpu: "N/A",
+        vram: "N/A",
+        ram: "N/A",
+        cpu: "N/A",
         notes: [],
         software: [],
         models: []
     };
 
     const isEnterprise = data.userType === 'organization';
-    // If not enterprise, force concurrent users to 1 (even if data has old value)
     const concurrentUsers = isEnterprise ? (parseInt(data.concurrentUsers) || 1) : 1;
+    const budget = data.budget || 5000;
 
-    const hasImageGen = data.useCases.includes('image_gen');
-    const hasVideo = data.useCases.includes('video');
-    const hasDev = data.useCases.includes('dev_support');
-    const hasRag = data.useCases.includes('rag');
-    const hasAudio = data.useCases.includes('transcribe') || data.useCases.includes('speech');
-    const hasChat = data.useCases.includes('chat') || hasDev || hasRag;
+    // For enterprise, default to linux if not specified
+    let preferredOS = isEnterprise ? 'linux' : (data.os || 'linux');
 
-    // --- Hardware Logic ---
-    if (isEnterprise || concurrentUsers > 1) {
-        recommendations.title = "Enterprise Server Solution";
-        recommendations.cpu = "AMD EPYC or Dual Xeon Gold";
-        recommendations.ram = `${Math.max(64, concurrentUsers * 16)}GB ECC`;
+    // --- 1. Identify Tags ---
+    let tagsToMatch = [];
+    if (data.useCases.includes('chat')) tagsToMatch.push('chat');
+    if (data.useCases.includes('dev_support')) tagsToMatch.push('coding');
+    if (data.useCases.includes('rag')) tagsToMatch.push('rag');
+    if (data.useCases.includes('image_gen')) tagsToMatch.push('image_gen');
+    if (data.useCases.includes('video')) tagsToMatch.push('video');
+    if (data.useCases.includes('transcribe') || data.useCases.includes('speech')) tagsToMatch.push('transcribe');
 
-        if (concurrentUsers <= 5) {
-            recommendations.gpu = "NVIDIA A4000 / A5000 or 2x RTX 4090";
-            recommendations.vram = "24GB+";
-        } else {
-            recommendations.gpu = "NVIDIA A100 / H100 or Multiple A6000s";
-            recommendations.vram = "48GB - 80GB+";
+    // --- 2. Select Hardware (Budget & OS Driven) ---
+
+    let selectedHardware = null;
+    let selectedGpusCount = 1;
+    let finalOS = preferredOS;
+
+    const calculatePrice = (hw, count) => {
+        return (hw.base_price || 0) + ((hw.gpu_price || 0) * count);
+    };
+
+    const supportsOS = (hw, os) => {
+        if (!hw.supported_os) return true;
+        return hw.supported_os.includes(os);
+    }
+
+    // Helper to find all valid configs sorted by VRAM desc, Price asc
+    const getCandidates = (dataset, targetOS) => {
+        let candidates = [];
+        for (const hw of dataset) {
+            if (!supportsOS(hw, targetOS)) continue;
+
+            if (hw.isUnifiedMemory) {
+                // Unified
+                const price = calculatePrice(hw, 1);
+                if (price <= budget) {
+                    candidates.push({ hw, count: 1, vram: hw.vram_per_gpu, price });
+                }
+            } else {
+                // Scalable
+                for (let count = hw.min_gpus; count <= hw.max_gpus; count++) {
+                    const price = calculatePrice(hw, count);
+                    if (price <= budget) {
+                        candidates.push({ hw, count, vram: count * hw.vram_per_gpu, price });
+                    }
+                }
+            }
         }
-        recommendations.notes.push("For multi-user environments, VRAM is shared. Dedicated server GPUs offer virtualization support (vGPU).");
 
-        // Enterprise Software
-        recommendations.software.push(
-            { name: "vLLM", link: "https://github.com/vllm-project/vllm", desc: "High-performance inference engine for serving models." },
-            { name: "Open WebUI", link: "https://github.com/open-webui/open-webui", desc: "ChatGPT-like interface for multiple users." }
-        );
+        // Sort: Highest VRAM first. If tie, Lowest Price.
+        candidates.sort((a, b) => {
+            if (b.vram !== a.vram) return b.vram - a.vram;
+            return a.price - b.price;
+        });
 
+        return candidates;
+    };
+
+    let candidates = [];
+    if (isEnterprise) {
+        finalOS = 'linux';
+        candidates = getCandidates(serversData, 'linux');
     } else {
-        // Single User Workstation
-        recommendations.title = "Local AI Workstation";
+        candidates = getCandidates(workstationsData, preferredOS);
 
-        if (hasVideo) {
-            recommendations.gpu = "NVIDIA RTX 4090";
-            recommendations.vram = "24GB";
-            recommendations.ram = "64GB";
-            recommendations.cpu = "Intel i9 or AMD Ryzen 9";
-            recommendations.notes.push("Video generation is extremely VRAM intensive.");
-        } else if (hasImageGen || hasDev) {
-            recommendations.gpu = "NVIDIA RTX 4080 or 4090";
-            recommendations.vram = "16GB - 24GB";
-            recommendations.ram = "32GB";
-            recommendations.cpu = "Intel i7 or AMD Ryzen 7";
-        } else if (hasRag) {
-            recommendations.gpu = "NVIDIA RTX 4060 Ti (16GB) or 4070";
-            recommendations.vram = "12GB - 16GB";
-            recommendations.ram = "32GB";
-            recommendations.notes.push("RAG requires loading embedding models + LLM. 16GB VRAM is sweet spot for mid-sized models.");
+        if (candidates.length === 0 && preferredOS !== 'linux') {
+            // Fallback to Linux
+            const linuxCandidates = getCandidates(workstationsData, 'linux');
+            if (linuxCandidates.length > 0) {
+                candidates = linuxCandidates;
+                finalOS = 'linux';
+                recommendations.notes.push(`${preferredOS.charAt(0).toUpperCase() + preferredOS.slice(1)} hardware not found within budget or spec. Defaulting to Linux options.`);
+            }
+        }
+    }
+
+    let totalSystemVram = 0;
+
+    if (candidates.length > 0) {
+        const best = candidates[0];
+        selectedHardware = best.hw;
+        selectedGpusCount = best.count;
+        totalSystemVram = best.vram;
+    } else {
+        recommendations.notes.push("No hardware configurations found within this budget. Please increase your budget.");
+        return recommendations;
+    }
+
+    // --- 3. Select Models (Capacity & Arch Driven) ---
+
+    let candidateModels = modelsData.filter(m => {
+        const tagsMatch = m.tags.some(t => tagsToMatch.includes(t));
+
+        // Resolve Architecture
+        let arch = selectedHardware.tensor_architecture;
+        if (!arch) {
+            // Fallback logic if property missing
+            if (finalOS === 'mac' || (selectedHardware.supported_os && selectedHardware.supported_os.includes('mac'))) arch = 'mac';
+            else arch = 'nvidia';
+        }
+
+        const compatMatch = m.compatibility ? m.compatibility.includes(arch) : true;
+        return tagsMatch && compatMatch;
+    });
+
+    const groupedModels = {};
+    candidateModels.forEach(m => {
+        if (!groupedModels[m.type]) groupedModels[m.type] = [];
+        groupedModels[m.type].push(m);
+    });
+
+    Object.keys(groupedModels).forEach(type => {
+        const models = groupedModels[type];
+        models.sort((a, b) => b.baseSizeGB - a.baseSizeGB);
+
+        let selected = null;
+        let maxContextLines = 0;
+
+        for (const m of models) {
+            let requiredSize = m.baseSizeGB;
+            // Removed input overhead calc here, we check base fit first
+
+            // Safety margin
+            let safetyMargin = selectedHardware.isUnifiedMemory ? 16 : 4;
+            if (totalSystemVram <= 16) safetyMargin = 2;
+            if (totalSystemVram <= 8) safetyMargin = 1;
+
+            if (requiredSize + safetyMargin <= totalSystemVram) {
+                const freeVram = totalSystemVram - requiredSize - safetyMargin;
+                selected = { ...m, estSize: requiredSize.toFixed(1) };
+
+                if (['LLM', 'Code'].includes(m.type)) {
+                    // Calculate max context
+                    let unit = "LoC"; // Lines of Code
+                    let vramFactor = 900; // Units per GB VRAM (Hardware Limit)
+                    let itemsPerToken = 1 / 200; // Placeholder defaults to avoid crash if logic fails
+
+                    // Conversion Constants:
+                    // 1 Token = 4 Chars
+                    // 1 Word = 6 Chars -> 1.5 Tokens (4/6 is wrong way? 6 chars = 1.5 * 4 chars)
+                    // Wait: 1 Token (4c). 1 Word (6c). 
+                    // Words = Tokens * (4/6) = Tokens * 0.666
+                    // LoC = Tokens * (4/50) = Tokens * 0.08
+
+                    if (m.type === 'LLM') {
+                        unit = "Words";
+                        vramFactor = 7500; // Hardware limit (Words/GB)
+                    }
+
+                    // 1. Hardware Limit
+                    let hardwareCapacity = Math.floor(freeVram * vramFactor);
+                    if (hardwareCapacity < 0) hardwareCapacity = 0;
+
+                    // 2. Model Limit (if available)
+                    let finalCapacity = hardwareCapacity;
+
+                    if (m.max_context_length) {
+                        let modelLimit = 0;
+                        if (m.type === 'LLM') {
+                            // Tokens -> Words
+                            // 1 Token = 4 chars. 1 Word = 6 chars.
+                            // Words = Tokens * (4/6)
+                            modelLimit = Math.floor(m.max_context_length * (4 / 6));
+                        } else {
+                            // Tokens -> LoC
+                            // 1 LoC = 50 chars.
+                            // LoC = Tokens * (4/50)
+                            modelLimit = Math.floor(m.max_context_length * (4 / 50));
+                        }
+
+                        finalCapacity = Math.min(hardwareCapacity, modelLimit);
+                    }
+
+                    // 3. Sig Digits (Round down to 2 significant figures)
+                    // e.g. 15432 -> 15000. 8192 -> 8100.
+                    if (finalCapacity > 0) {
+                        const magnitude = Math.pow(10, Math.floor(Math.log10(finalCapacity)));
+                        // We want 2 sig figs. magnitude is e.g. 10000 for 12345.
+                        // We want to work with 10^(digits-2).
+                        // Easier: 
+                        // String manip or math.
+                        // Math:
+                        // precision = 2
+                        // factor = 10 ^ (digits - precision)
+                        // round(num / factor) * factor
+
+                        const digits = Math.floor(Math.log10(finalCapacity)) + 1;
+                        if (digits > 2) {
+                            const factor = Math.pow(10, digits - 2);
+                            finalCapacity = Math.floor(finalCapacity / factor) * factor;
+                        }
+                    }
+
+                    selected.maxContextDisplay = `${finalCapacity.toLocaleString()} ${unit}`;
+                }
+                break;
+            }
+        }
+
+        if (selected) {
+            recommendations.models.push(selected);
         } else {
-            // Basic Chat / Transcribe
-            recommendations.gpu = "NVIDIA RTX 3060 / 4060";
-            recommendations.vram = "8GB - 12GB";
-            recommendations.ram = "16GB";
-            recommendations.cpu = "Intel i5 or AMD Ryzen 5";
+            recommendations.notes.push(`Could not find a suitable ${type} model that fits in ${totalSystemVram}GB VRAM.`);
         }
+    });
 
-        // Single User Software
-        if (hasChat || hasRag) {
-            recommendations.software.push({ name: "Ollama", link: "https://ollama.com/", desc: "Easiest way to run LLMs locally." });
-            recommendations.software.push({ name: "LM Studio", link: "https://lmstudio.ai/", desc: "GUI for discovering and running models." });
-        }
+
+    // --- 4. Select Software ---
+    const relevantSoftware = softwareData.filter(sw => {
+        const matchesTags = sw.tags.some(t => tagsToMatch.includes(t));
+        const matchesOS = sw.compatibility.includes(finalOS);
+        return matchesTags && matchesOS;
+    });
+    recommendations.software = relevantSoftware;
+
+    // --- 5. Finalize Output ---
+    recommendations.title = selectedHardware.name;
+
+    if (selectedHardware.isUnifiedMemory) {
+        recommendations.gpu = selectedHardware.gpu_model;
+        recommendations.vram = "Shared";
+        recommendations.ram = selectedHardware.ram;
+    } else {
+        recommendations.gpu = `${selectedGpusCount}x ${selectedHardware.gpu_model}`;
+        recommendations.vram = `${selectedGpusCount * selectedHardware.vram_per_gpu}GB`;
+        recommendations.ram = selectedHardware.ram;
     }
+    recommendations.cpu = selectedHardware.cpu;
 
-    // --- Task Specific Software & Models ---
-
-    if (hasChat || hasDev) {
-        if (recommendations.vram.includes("24GB") || isEnterprise) {
-            recommendations.models.push({ name: "Llama 3.1 70B", type: "LLM", link: "https://huggingface.co/meta-llama/Meta-Llama-3.1-70B", desc: "State-of-the-art open model. Requires dual GPU or high quantization." });
-            recommendations.models.push({ name: "Qwen 2.5 72B", type: "LLM", link: "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct", desc: "Excellent reasoning capabilities." });
-            recommendations.models.push({ name: "DeepSeek Coder V2", type: "Code", link: "https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct", desc: "Top tier coding model." });
-        } else if (recommendations.vram.includes("12GB") || recommendations.vram.includes("16GB")) {
-            recommendations.models.push({ name: "Mistral NeMo 12B", type: "LLM", link: "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407", desc: "Great balance of size and performance." });
-            recommendations.models.push({ name: "Qwen 2.5 14B", type: "LLM", link: "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct", desc: "Strong reasoning for mid-range cards." });
-        } else {
-            recommendations.models.push({ name: "Llama 3.1 8B", type: "LLM", link: "https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct", desc: "Fast and capable, runs on almost anything." });
-            recommendations.models.push({ name: "Gemma 2 9B", type: "LLM", link: "https://huggingface.co/google/gemma-2-9b-it", desc: "Google's open weight model." });
-        }
-    }
-
-    if (hasDev) {
-        recommendations.software.push({ name: "Continue.dev", link: "https://continue.dev/", desc: "VS Code extension for local AI coding." });
-    }
-
-    if (hasRag) {
-        recommendations.software.push({ name: "AnythingLLM Desktop", link: "https://useanything.com/", desc: "All-in-one RAG solution." });
-        recommendations.software.push({ name: "PrivateGPT", link: "https://github.com/zylon-ai/private-gpt", desc: "Privacy-focused RAG." });
-        recommendations.models.push({ name: "nomic-embed-text", type: "Embedding", link: "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5", desc: "High quality embedding model." });
-    }
-
-    if (hasImageGen) {
-        if (!isEnterprise) {
-            recommendations.software.push({ name: "ComfyUI", link: "https://github.com/comfyanonymous/ComfyUI", desc: "Node-based workflow editor, best for power users." });
-            recommendations.software.push({ name: "Fooocus", link: "https://github.com/lllyasviel/Fooocus", desc: "Midjourney-like easy to use interface." });
-        }
-
-        if (recommendations.vram.includes("24GB") || isEnterprise) {
-            recommendations.models.push({ name: "Flux.1 [dev/schnell]", type: "Image", link: "https://huggingface.co/black-forest-labs/FLUX.1-dev", desc: "Current SOTA open image model." });
-        } else {
-            recommendations.models.push({ name: "SDXL Lightning", type: "Image", link: "https://huggingface.co/ByteDance/SDXL-Lightning", desc: "Fast generation, lower VRAM usage." });
-        }
-    }
-
-    if (hasVideo) {
-        recommendations.models.push({ name: "SVD", type: "Video", link: "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt", desc: "Short video generation." });
-        recommendations.models.push({ name: "CogVideoX", type: "Video", link: "https://huggingface.co/THUDM/CogVideoX-2b", desc: "Text-to-video model." });
-    }
-
-    if (hasAudio) {
-        recommendations.models.push({ name: "Whisper (large-v3)", type: "Audio", link: "https://huggingface.co/openai/whisper-large-v3", desc: "Industry standard for transcription." });
+    if (isEnterprise && concurrentUsers > 1) {
+        recommendations.notes.push(`Configuration for ${concurrentUsers} concurrent users.`);
     }
 
     return recommendations;

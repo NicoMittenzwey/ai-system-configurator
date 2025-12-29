@@ -1,0 +1,140 @@
+[
+    {
+        "id": "ollama",
+        "name": "Ollama",
+        "type": "Runtime",
+        "tags": [
+            "chat",
+            "rag",
+            "coding"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://ollama.com/",
+        "desc": "Easiest way to run LLMs locally."
+    },
+    {
+        "id": "lm_studio",
+        "name": "LM Studio",
+        "type": "GUI",
+        "tags": [
+            "chat",
+            "rag"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://lmstudio.ai/",
+        "desc": "GUI for discovering and running models."
+    },
+    {
+        "id": "vllm",
+        "name": "vLLM",
+        "type": "Runtime",
+        "tags": [
+            "chat",
+            "coding",
+            "serving"
+        ],
+        "compatibility": [
+            "linux"
+        ],
+        "link": "https://github.com/vllm-project/vllm",
+        "desc": "High-performance inference engine for serving models."
+    },
+    {
+        "id": "open_webui",
+        "name": "Open WebUI",
+        "type": "GUI",
+        "tags": [
+            "chat",
+            "coding"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://github.com/open-webui/open-webui",
+        "desc": "ChatGPT-like interface for multiple users."
+    },
+    {
+        "id": "continue",
+        "name": "Continue.dev",
+        "type": "IDE Extension",
+        "tags": [
+            "coding"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://continue.dev/",
+        "desc": "VS Code extension for local AI coding."
+    },
+    {
+        "id": "anything_llm",
+        "name": "AnythingLLM Desktop",
+        "type": "RAG",
+        "tags": [
+            "rag"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://useanything.com/",
+        "desc": "All-in-one RAG solution."
+    },
+    {
+        "id": "private_gpt",
+        "name": "PrivateGPT",
+        "type": "RAG",
+        "tags": [
+            "rag"
+        ],
+        "compatibility": [
+            "linux",
+            "mac"
+        ],
+        "link": "https://github.com/zylon-ai/private-gpt",
+        "desc": "Privacy-focused RAG."
+    },
+    {
+        "id": "comfyui",
+        "name": "ComfyUI",
+        "type": "Image Gen",
+        "tags": [
+            "image_gen",
+            "video"
+        ],
+        "compatibility": [
+            "linux",
+            "mac",
+            "windows"
+        ],
+        "link": "https://github.com/comfyanonymous/ComfyUI",
+        "desc": "Node-based workflow editor, best for power users."
+    },
+    {
+        "id": "fooocus",
+        "name": "Fooocus",
+        "type": "Image Gen",
+        "tags": [
+            "image_gen"
+        ],
+        "compatibility": [
+            "linux",
+            "windows"
+        ],
+        "link": "https://github.com/lllyasviel/Fooocus",
+        "desc": "Midjourney-like easy to use interface."
+    }
+]

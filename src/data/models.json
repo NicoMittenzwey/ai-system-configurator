@@ -1,0 +1,235 @@
+[
+    {
+        "id": "llama_3_8b",
+        "name": "Llama 3.1 8B",
+        "type": "LLM",
+        "baseSizeGB": 6,
+        "max_context_length": 128000,
+        "tags": [
+            "chat",
+            "coding",
+            "rag",
+            "small"
+        ],
+        "link": "https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "desc": "Fast and capable, runs on almost anything.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "gemma_2_9b",
+        "name": "Gemma 2 9B",
+        "type": "LLM",
+        "baseSizeGB": 7,
+        "max_context_length": 8192,
+        "tags": [
+            "chat",
+            "coding",
+            "small"
+        ],
+        "link": "https://huggingface.co/google/gemma-2-9b-it",
+        "desc": "Google's open weight model.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "mistral_nemo_12b",
+        "name": "Mistral NeMo 12B",
+        "type": "LLM",
+        "baseSizeGB": 8,
+        "max_context_length": 128000,
+        "tags": [
+            "chat",
+            "coding",
+            "medium"
+        ],
+        "link": "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407",
+        "desc": "Great balance of size and performance.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "qwen_2_5_14b",
+        "name": "Qwen 2.5 14B",
+        "type": "LLM",
+        "baseSizeGB": 9,
+        "max_context_length": 128000,
+        "tags": [
+            "chat",
+            "coding",
+            "medium"
+        ],
+        "link": "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct",
+        "desc": "Strong reasoning for mid-range cards.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "deepseek_coder_v2",
+        "name": "DeepSeek Coder V2",
+        "type": "Code",
+        "baseSizeGB": 96,
+        "max_context_length": 128000,
+        "tags": [
+            "coding",
+            "large"
+        ],
+        "link": "https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct",
+        "desc": "Top tier coding model.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "llama_3_70b",
+        "name": "Llama 3.1 70B",
+        "type": "LLM",
+        "baseSizeGB": 40,
+        "max_context_length": 128000,
+        "tags": [
+            "chat",
+            "coding",
+            "rag",
+            "large"
+        ],
+        "link": "https://huggingface.co/meta-llama/Meta-Llama-3.1-70B",
+        "desc": "State-of-the-art open model. Requires dual GPU or high quantization.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "qwen_2_5_72b",
+        "name": "Qwen 2.5 72B",
+        "type": "LLM",
+        "baseSizeGB": 42,
+        "max_context_length": 128000,
+        "tags": [
+            "chat",
+            "coding",
+            "large"
+        ],
+        "link": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+        "desc": "Excellent reasoning capabilities.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "flux_1",
+        "name": "Flux.1 [dev/schnell]",
+        "type": "Image",
+        "baseSizeGB": 16,
+        "tags": [
+            "image_gen",
+            "large"
+        ],
+        "link": "https://huggingface.co/black-forest-labs/FLUX.1-dev",
+        "desc": "Current SOTA open image model.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "sdxl_lightning",
+        "name": "SDXL Lightning",
+        "type": "Image",
+        "baseSizeGB": 6,
+        "tags": [
+            "image_gen",
+            "small"
+        ],
+        "link": "https://huggingface.co/ByteDance/SDXL-Lightning",
+        "desc": "Fast generation, lower VRAM usage.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "svd",
+        "name": "SVD (Stable Video Diffusion)",
+        "type": "Video",
+        "baseSizeGB": 8,
+        "tags": [
+            "video"
+        ],
+        "link": "https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt",
+        "desc": "Short video generation.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "cogvideox",
+        "name": "CogVideoX",
+        "type": "Video",
+        "baseSizeGB": 12,
+        "tags": [
+            "video"
+        ],
+        "link": "https://huggingface.co/THUDM/CogVideoX-2b",
+        "desc": "Text-to-video model.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "whisper_large",
+        "name": "Whisper (large-v3)",
+        "type": "Audio",
+        "baseSizeGB": 3,
+        "tags": [
+            "transcribe",
+            "speech"
+        ],
+        "link": "https://huggingface.co/openai/whisper-large-v3",
+        "desc": "Industry standard for transcription.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    },
+    {
+        "id": "nomic_embed",
+        "name": "nomic-embed-text",
+        "type": "Embedding",
+        "baseSizeGB": 1,
+        "tags": [
+            "rag"
+        ],
+        "link": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5",
+        "desc": "High quality embedding model.",
+        "compatibility": [
+            "nvidia",
+            "amd",
+            "mac"
+        ]
+    }
+]

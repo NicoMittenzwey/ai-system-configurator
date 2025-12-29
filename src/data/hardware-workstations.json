@@ -1,0 +1,120 @@
+[
+    {
+        "id": "entry_budget",
+        "name": "Budget AI Starter",
+        "gpu_model": "NVIDIA RTX 4060 Ti 16GB",
+        "vram_per_gpu": 16,
+        "min_gpus": 1,
+        "max_gpus": 1,
+        "is_scalable": false,
+        "ram": "32GB",
+        "cpu": "Intel i5 or AMD Ryzen 5",
+        "isUnifiedMemory": false,
+        "price_tier": 1,
+        "supported_os": [
+            "linux",
+            "windows"
+        ],
+        "base_price": 1200,
+        "gpu_price": 0,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "mid_range",
+        "name": "Mid-Range Enthusiast",
+        "gpu_model": "NVIDIA RTX 4080 Super",
+        "vram_per_gpu": 16,
+        "min_gpus": 1,
+        "max_gpus": 2,
+        "is_scalable": true,
+        "ram": "64GB",
+        "cpu": "Intel i7 or AMD Ryzen 7",
+        "isUnifiedMemory": false,
+        "price_tier": 2,
+        "supported_os": [
+            "linux",
+            "windows"
+        ],
+        "base_price": 2000,
+        "gpu_price": 1000,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "high_end_consumer",
+        "name": "High-End Workstation",
+        "gpu_model": "NVIDIA RTX 4090",
+        "vram_per_gpu": 24,
+        "min_gpus": 1,
+        "max_gpus": 4,
+        "is_scalable": true,
+        "ram": "128GB",
+        "cpu": "AMD Threadripper or Ryzen 9",
+        "isUnifiedMemory": false,
+        "price_tier": 3,
+        "supported_os": [
+            "linux",
+            "windows"
+        ],
+        "base_price": 3500,
+        "gpu_price": 1800,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "high_end_pro",
+        "name": "High-End Pro Workstation",
+        "gpu_model": "NVIDIA RTX 6000 Blackwell",
+        "vram_per_gpu": 96,
+        "min_gpus": 1,
+        "max_gpus": 4,
+        "is_scalable": true,
+        "ram": "128GB",
+        "cpu": "AMD Threadripper or Ryzen 9",
+        "isUnifiedMemory": false,
+        "price_tier": 3,
+        "supported_os": [
+            "linux",
+            "windows"
+        ],
+        "base_price": 5000,
+        "gpu_price": 8000,
+        "tensor_architecture": "nvidia"
+    },
+    {
+        "id": "mac_studio_m4",
+        "name": "Apple Mac Studio M4 Ultra",
+        "gpu_model": "M4 Ultra (Unified)",
+        "vram_per_gpu": 128,
+        "min_gpus": 1,
+        "max_gpus": 1,
+        "is_scalable": false,
+        "ram": "128GB (Shared with GPU)",
+        "cpu": "M4 Ultra",
+        "isUnifiedMemory": true,
+        "price_tier": 4,
+        "supported_os": [
+            "mac"
+        ],
+        "base_price": 5000,
+        "gpu_price": 0,
+        "tensor_architecture": "mac"
+    },
+    {
+        "id": "dgx_spark",
+        "name": "Nvidia DGX Spark (2025)",
+        "gpu_model": "Nvidia GB10 Grace Blackwell",
+        "vram_per_gpu": 128,
+        "min_gpus": 1,
+        "max_gpus": 1,
+        "is_scalable": false,
+        "ram": "128GB (Shared with GPU)",
+        "cpu": "Nvidia Grace",
+        "isUnifiedMemory": true,
+        "price_tier": 5,
+        "supported_os": [
+            "linux"
+        ],
+        "base_price": 5000,
+        "gpu_price": 0,
+        "tensor_architecture": "nvidia"
+    }
+]
