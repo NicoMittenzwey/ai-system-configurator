@@ -1,16 +1,59 @@
-# React + Vite
+# AI System Configurator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based web application that helps users select the optimal hardware and software configuration for running AI models locally.
 
-Currently, two official plugins are available:
+![AI System Configurator Screenshot](public/vite.svg) 
+> *Note: Screenshot placeholder. Consider adding a real screenshot of the UI.*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+-   **Interactive Configurator**: Tailor recommendations based on user type (Individual vs. Organization) and specific use cases (Chat, Image Gen, Coding Support, etc.).
+-   **Hardware Recommendations**: Get specific advice on GPU, VRAM, System RAM, and CPU requirements.
+-   **Software & Model Suggestions**: Discover the best tools (Ollama, ComfyUI, vLLM) and models (Llama 3, Flux.1, Whisper) for your needs.
+-   **Direct Links**: One-click access to official project repositories and Hugging Face model pages.
+-   **Data Sovereignty Focus**: Learn why running local AI is better for privacy, GDPR compliance, and cost control.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+-   **Frontend**: React
+-   **Build Tool**: Vite
+-   **Styling**: CSS (Premium Dark Theme)
+-   **Deployment**: GitHub Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Installation & Setup
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/NicoMittenzwey/ai-system-configurator.git
+    cd ai-system-configurator
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run locally**
+    ```bash
+    npm run dev
+    ```
+    Open your browser at `http://localhost:5173/ai-system-configurator/` (or the port shown in terminal).
+
+## 🚀 Deployment
+
+This project is configured for easy deployment to GitHub Pages.
+
+1.  **Build**
+    ```bash
+    npm run build
+    ```
+
+2.  **Deploy**
+    ```bash
+    npm run deploy
+    ```
+    This command uses the `gh-pages` package to push the `dist` folder to the `gh-pages` branch.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
