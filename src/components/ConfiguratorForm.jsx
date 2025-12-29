@@ -37,7 +37,7 @@ export default function ConfiguratorForm() {
                         onChange={(e) => setFormData({ ...formData, userType: e.target.value })}
                         style={{ width: '100%', padding: '0.8rem', borderRadius: '6px', background: 'var(--color-bg)', color: 'white', border: '1px solid #334155' }}
                     >
-                        <option value="individual">Individual Workstation (Single User)</option>
+                        <option value="individual">Individual PC / Workstation (Single User)</option>
                         <option value="organization">Organization Server (Multi-User)</option>
                     </select>
                 </div>
@@ -116,6 +116,43 @@ export default function ConfiguratorForm() {
                                     <li key={idx}>{note}</li>
                                 ))}
                             </ul>
+                        </div>
+                    )}
+
+                    {recommendation.software.length > 0 && (
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <h3 style={{ borderBottom: '1px solid #334155', paddingBottom: '0.5rem' }}>🛠️ Recommended Software Stack</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                                {recommendation.software.map((sw, idx) => (
+                                    <div key={idx} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '6px' }}>
+                                        <div style={{ fontWeight: 'bold', color: 'var(--color-accent)' }}>
+                                            <a href={sw.link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.textDecoration = 'underline'} onMouseOut={(e) => e.target.style.textDecoration = 'none'}>
+                                                {sw.name} 🔗
+                                            </a>
+                                        </div>
+                                        <div style={{ fontSize: '0.9em', color: '#94a3b8' }}>{sw.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {recommendation.models.length > 0 && (
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <h3 style={{ borderBottom: '1px solid #334155', paddingBottom: '0.5rem' }}>🧠 Suggested Models</h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                                {recommendation.models.map((model, idx) => (
+                                    <div key={idx} style={{ background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '6px' }}>
+                                        <span style={{ fontSize: '0.7em', textTransform: 'uppercase', background: '#334155', padding: '2px 6px', borderRadius: '4px' }}>{model.type}</span>
+                                        <div style={{ fontWeight: 'bold', color: 'white', marginTop: '0.4rem' }}>
+                                            <a href={model.link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.textDecoration = 'underline'} onMouseOut={(e) => e.target.style.textDecoration = 'none'}>
+                                                {model.name} 🔗
+                                            </a>
+                                        </div>
+                                        <div style={{ fontSize: '0.9em', color: '#94a3b8' }}>{model.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>
