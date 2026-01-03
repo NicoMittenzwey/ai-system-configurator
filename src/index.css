@@ -3,23 +3,28 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* Premium Dark Palette */
-  --color-bg: #0f172a;
-  /* Slate 900 */
-  --color-surface: #1e293b;
-  /* Slate 800 */
-  --color-primary: #3b82f6;
-  /* Blue 500 */
-  --color-accent: #8b5cf6;
-  /* Violet 500 */
-  --color-text-main: #f8fafc;
+  /* Conservative Light Palette */
+  --color-bg: #f8fafc;
   /* Slate 50 */
-  --color-text-muted: #94a3b8;
-  /* Slate 400 */
+  --color-surface: #ffffff;
+  /* White */
+  --color-primary: #1e3a8a;
+  /* Blue 900 (Professional/Trustworthy) */
+  --color-accent: #0f766e;
+  /* Teal 700 (Subtle accent) */
+  --color-text-main: #0f172a;
+  /* Slate 900 */
+  --color-text-muted: #64748b;
+  /* Slate 500 */
+  --color-border: #e2e8f0;
+  /* Slate 200 */
+  --color-input-bg: #ffffff;
+  --color-input-border: #cbd5e1;
 
-  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  --gradient-primary: #1e3a8a;
+  /* Solid color for professional look */
 
-  color-scheme: dark;
+  color-scheme: light;
   color: var(--color-text-main);
   background-color: var(--color-bg);
 
@@ -49,36 +54,41 @@ h3 {
 }
 
 .btn {
-  border-radius: 8px;
-  border: 1px solid transparent;
+  border-radius: 6px;
+  border: 1px solid var(--color-input-border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: var(--color-surface);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.2s;
   color: var(--color-text-main);
 }
 
 .btn:hover {
   border-color: var(--color-primary);
+  background-color: #f1f5f9;
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
+  background: var(--color-primary);
+  color: white;
   border: none;
 }
 
 .btn-primary:hover {
   opacity: 0.9;
+  background-color: #1e40af;
+  /* Slightly lighter blue */
 }
 
 .card {
   padding: 2rem;
   background-color: var(--color-surface);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   margin-bottom: 2rem;
   text-align: left;
 }

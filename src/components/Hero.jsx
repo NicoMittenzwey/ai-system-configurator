@@ -3,7 +3,7 @@ import React from 'react';
 export default function Hero() {
     return (
         <div style={{ padding: '4rem 1rem', marginBottom: '2rem' }}>
-            <h1 style={{ fontSize: '3rem', fontWeight: '800', background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: '0 auto 1rem' }}>
+            <h1 style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--color-primary)', margin: '0 auto 1rem' }}>
                 Secure. Private. Powerful.
             </h1>
             <p style={{ fontSize: '1.25rem', color: 'var(--color-text-muted)', maxWidth: '600px', margin: '0 auto 2rem' }}>
