@@ -13,6 +13,14 @@ export default function ConfiguratorForm() {
 
     const [recommendation, setRecommendation] = useState(null);
 
+    const handleUserTypeChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            userType: value,
+            budget: value === 'organization' ? 25000 : 5000
+        }));
+    };
+
     const handleUseCaseChange = (e) => {
         const value = e.target.value;
         setFormData(prev => ({
@@ -31,14 +39,14 @@ export default function ConfiguratorForm() {
     return (
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div className="card">
-                <h2>🏗️ Configure Your System</h2>
+                <h2>Configure Your System</h2>
 
                 <div style={{ marginBottom: '1.5rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--color-text-main)' }}>Usage Scenario</label>
                     <select
                         value={formData.userType}
-                        onChange={(e) => setFormData({ ...formData, userType: e.target.value })}
-                        style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)' }}
+                        onChange={(e) => handleUserTypeChange(e.target.value)}
+                        style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)', boxSizing: 'border-box' }}
                     >
                         <option value="individual">Individual PC / Workstation (Single User)</option>
                         <option value="organization">Organization Server (Multi-User)</option>
@@ -46,8 +54,8 @@ export default function ConfiguratorForm() {
                 </div>
 
                 {formData.userType === 'individual' && (
-                    <div style={{ marginBottom: '1.5rem', background: '#f8fafc', padding: '1rem', borderRadius: '6px', border: '1px solid var(--color-border)' }}>
-                        <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: '600', color: 'var(--color-primary)' }}>Preferred OS</label>
+                    <div style={{ marginBottom: '1.5rem' }}>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--color-text-main)' }}>Preferred OS</label>
                         <div style={{ display: 'flex', gap: '1rem' }}>
                             {['linux', 'windows', 'mac'].map(os => (
                                 <label key={os} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--color-text-main)' }}>
@@ -74,22 +82,21 @@ export default function ConfiguratorForm() {
                             min="1"
                             value={formData.concurrentUsers}
                             onChange={(e) => setFormData({ ...formData, concurrentUsers: e.target.value })}
-                            style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)' }}
+                            style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)', boxSizing: 'border-box' }}
                         />
                     </div>
                 )}
 
-                <div style={{ marginBottom: '1.5rem', background: '#f8fafc', padding: '1rem', borderRadius: '6px', border: '1px solid var(--color-border)' }}>
-                    <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: '600', color: 'var(--color-primary)' }}>Maximum Budget (USD)</label>
-                    <select
+                <div style={{ marginBottom: '1.5rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--color-text-main)' }}>Maximum Budget (USD)</label>
+                    <input
+                        type="number"
+                        min="1000"
+                        step="5000"
                         value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: parseInt(e.target.value) })}
-                        style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)' }}
-                    >
-                        {Array.from({ length: 40 }, (_, i) => (i + 1) * 5000).map(amount => (
-                            <option key={amount} value={amount}>${amount.toLocaleString()}</option>
-                        ))}
-                    </select>
+                        onChange={(e) => setFormData({ ...formData, budget: parseInt(e.target.value) || 0 })}
+                        style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', background: 'var(--color-input-bg)', color: 'var(--color-text-main)', border: '1px solid var(--color-input-border)', boxSizing: 'border-box' }}
+                    />
                 </div>
 
                 <div style={{ marginBottom: '2rem' }}>

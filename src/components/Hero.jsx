@@ -3,6 +3,20 @@ import React from 'react';
 export default function Hero() {
     return (
         <div style={{ padding: '4rem 1rem', marginBottom: '2rem' }}>
+            <div style={{
+                display: 'inline-block',
+                backgroundColor: '#dc2626',
+                color: 'white',
+                padding: '0.4rem 1rem',
+                borderRadius: '6px',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                marginBottom: '1.5rem',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>
+                Beta
+            </div>
             <h1 style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--color-primary)', margin: '0 auto 1rem' }}>
                 Secure. Private. Powerful.
             </h1>

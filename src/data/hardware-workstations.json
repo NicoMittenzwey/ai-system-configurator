@@ -76,7 +76,7 @@
             "windows"
         ],
         "base_price": 5000,
-        "gpu_price": 8000,
+        "gpu_price": 800,
         "tensor_architecture": "nvidia"
     },
     {
@@ -95,6 +95,44 @@
             "mac"
         ],
         "base_price": 5000,
+        "gpu_price": 0,
+        "tensor_architecture": "mac"
+    },
+    {
+        "id": "mac_studio_M3_256GB",
+        "name": "Apple Mac Studio M3 256GB",
+        "gpu_model": "M3 Ultra (Unified)",
+        "vram_per_gpu": 256,
+        "min_gpus": 1,
+        "max_gpus": 1,
+        "is_scalable": false,
+        "ram": "256GB (Shared with GPU)",
+        "cpu": "M3 Ultra",
+        "isUnifiedMemory": true,
+        "price_tier": 4,
+        "supported_os": [
+            "mac"
+        ],
+        "base_price": 7500,
+        "gpu_price": 0,
+        "tensor_architecture": "mac"
+    },
+    {
+        "id": "mac_studio_M3_512GB",
+        "name": "Apple Mac Studio M3 512GB",
+        "gpu_model": "M3 Ultra (Unified)",
+        "vram_per_gpu": 512,
+        "min_gpus": 1,
+        "max_gpus": 1,
+        "is_scalable": false,
+        "ram": "512GB (Shared with GPU)",
+        "cpu": "M3 Ultra",
+        "isUnifiedMemory": true,
+        "price_tier": 4,
+        "supported_os": [
+            "mac"
+        ],
+        "base_price": 12000,
         "gpu_price": 0,
         "tensor_architecture": "mac"
     },
