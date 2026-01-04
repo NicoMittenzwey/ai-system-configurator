@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RecommendationEngine } from './RecommendationEngine';
 
 export default function ConfiguratorForm() {
+    const resultRef = useRef(null);
     const [formData, setFormData] = useState({
         userType: 'individual',
         concurrentUsers: 1,
@@ -12,6 +13,12 @@ export default function ConfiguratorForm() {
     });
 
     const [recommendation, setRecommendation] = useState(null);
+
+    useEffect(() => {
+        if (recommendation && resultRef.current) {
+            resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [recommendation]);
 
     const handleUserTypeChange = (value) => {
         setFormData(prev => ({
@@ -130,7 +137,7 @@ export default function ConfiguratorForm() {
             </div>
 
             {recommendation && (
-                <div className="card" style={{ border: '1px solid var(--color-primary)', background: '#f0f9ff' }}>
+                <div ref={resultRef} className="card" style={{ border: '1px solid var(--color-primary)', background: '#f0f9ff' }}>
                     <h2 style={{ color: 'var(--color-primary)', marginTop: 0 }}>{recommendation.title}</h2>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
