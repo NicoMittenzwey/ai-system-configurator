@@ -124,8 +124,8 @@
         "desc": "Node-based workflow editor, best for power users."
     },
     {
-        "id": "fooocus",
-        "name": "Fooocus",
+        "id": "krita_ai_diffusion",
+        "name": "Krita AI Diffusion",
         "type": "Image Gen",
         "tags": [
             "image_gen"
@@ -134,7 +134,7 @@
             "linux",
             "windows"
         ],
-        "link": "https://github.com/lllyasviel/Fooocus",
-        "desc": "Midjourney-like easy to use interface."
+        "link": "https://github.com/Acly/krita-ai-diffusion",
+        "desc": "Professional AI integration for Krita with real-time painting."
     }
 ]

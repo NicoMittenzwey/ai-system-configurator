@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import ITAdmin from './components/ITAdmin';
 import Configurator from './components/Configurator';
+import UseCases from './components/UseCases';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/use-cases" element={<UseCases />} />
         <Route path="/admin" element={<ITAdmin />} />
         <Route path="/configurator" element={<Configurator />} />
       </Routes>

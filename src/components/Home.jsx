@@ -33,7 +33,7 @@ export default function Home() {
                     <strong> This is no longer necessary.</strong>
                 </p>
                 <p>
-                    By running "Open Weight" models on your own hardware, you gain complete control. These models (like Mistral) are comparable in performance to cloud services but run entirely offline within your building.
+                    By running "Open Weight" models on your own hardware together with open source frontends, you gain complete control. These models (like Mistral or OpenAIs GPT-OSS) are comparable in performance and quality to cloud services but run entirely offline within your premises.
                 </p>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '2rem' }}>
@@ -43,7 +43,7 @@ export default function Home() {
                     </div>
                     <div>
                         <h3 style={{ color: 'var(--color-accent)' }}>🛡️ Full Compliance</h3>
-                        <p>Simplifies DSGVO / GDPR compliance significantly since no third-party data processing takes place. You are the sole data processor.</p>
+                        <p>Simplifies GDPR compliance significantly since no third-party data processing takes place. You are the sole data processor.</p>
                     </div>
                 </div>
             </div>

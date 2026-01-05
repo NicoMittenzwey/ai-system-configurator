@@ -37,6 +37,7 @@ export default function Navbar() {
                 <div style={{ color: 'white', fontWeight: 'bold', fontSize: '1.2rem' }}>AI System Configurator</div>
                 <div style={linkContainerStyle}>
                     <NavLink to="/" style={linkStyle}>Overview</NavLink>
+                    <NavLink to="/use-cases" style={linkStyle}>Use Cases</NavLink>
                     <NavLink to="/admin" style={linkStyle}>For IT Admins</NavLink>
                     <NavLink to="/configurator" style={linkStyle}>System Configurator</NavLink>
                 </div>
